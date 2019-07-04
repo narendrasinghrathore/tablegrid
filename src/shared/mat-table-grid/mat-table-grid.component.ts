@@ -3,6 +3,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+
 
 export interface PeriodicElement {
   name: string;
@@ -30,13 +32,21 @@ const ELEMENT_DATA: PeriodicElement[] = [
 @Component({
   selector: 'app-mat-table-grid',
   templateUrl: './mat-table-grid.component.html',
-  styleUrls: ['./mat-table-grid.component.scss']
+  styleUrls: ['./mat-table-grid.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class MatTableGridComponent implements OnInit {
 
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
+  expandedElement: PeriodicElement | null;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
