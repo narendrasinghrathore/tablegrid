@@ -1,48 +1,67 @@
 <div>
-  <mat-form-field [floatLabel]="'always'">
-    <mat-label>Columns Hidden: {{columnsToDisplay.value.length}}</mat-label>
-    <mat-select [formControl]="columnsToDisplay" multiple>
-      <mat-option *ngFor="let column of displayedColumns" [value]="column">{{column | uppercase}}</mat-option>
-    </mat-select>
-    <mat-hint align="end">Hide /Un-hide column in table</mat-hint>
-  </mat-form-field>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Table: [ Columns Hidden: {{columnsToDisplay.value.length}}]</span>
+      <span class="example-spacer"></span>
+      <span>Hide/ Unhide table column(s).</span>
+      <mat-form-field [floatLabel]="'always'">
+        <mat-label></mat-label>
+        <mat-select [formControl]="columnsToDisplay" multiple>
+          <mat-option *ngFor="let column of displayedColumns" [value]="column">{{column | uppercase}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
 </div>
 <hr />
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
+  <div>
 
-  <ng-container matColumnDef="{{column}}"
-    *ngFor="let column of displayedColumns">
-    <ng-container *ngIf="column === 'select'">
-      <th [hidden]="isHidden(column)" mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-        </mat-checkbox>
-      </th>
-      <td [hidden]="isHidden(column)" mat-cell *matCellDef="let row">
-        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-          [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
-        </mat-checkbox>
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+      <div cdkDrag>
+        <ng-container *ngIf="column === 'select'">
+          <th [hidden]="isHidden(column)" mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td [hidden]="isHidden(column)" mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <th mat-header-cell [hidden]="isHidden(column)" cdkDrag *matHeaderCellDef mat-sort-header cdkDropList
+          cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+          <span class="marginleft10">{{column}}</span>
+        </th>
+        <td mat-cell *matCellDef="let element" [hidden]=isHidden(column)> <span
+            class="marginleft10">{{element[column]}}</span>
+        </td>
+      </div>
+
+    </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div class="example-element-diagram">
+            <div class="example-element-position"> {{element.position}} </div>
+            <div class="example-element-symbol"> {{element.symbol}} </div>
+            <div class="example-element-name"> {{element.name}} </div>
+            <div class="example-element-weight"> {{element.weight}} </div>
+          </div>
+          <div class="example-element-description">
+            {{element.description}}
+            <span class="example-element-description-attribution"> -- Wikipedia </span>
+          </div>
+        </div>
       </td>
     </ng-container>
-    <th mat-header-cell [hidden]="isHidden(column)" *matHeaderCellDef mat-sort-header><span class="marginleft10">{{column}}</span> </th>
-    <td mat-cell *matCellDef="let element" [hidden]=isHidden(column)> <span class="marginleft10">{{element[column]}}</span> </td>
-  </ng-container>
-  <ng-container matColumnDef="expandedDetail">
-    <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-      <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-        <div class="example-element-diagram">
-          <div class="example-element-position"> {{element.position}} </div>
-          <div class="example-element-symbol"> {{element.symbol}} </div>
-          <div class="example-element-name"> {{element.name}} </div>
-          <div class="example-element-weight"> {{element.weight}} </div>
-        </div>
-        <div class="example-element-description">
-          {{element.description}}
-          <span class="example-element-description-attribution"> -- Wikipedia </span>
-        </div>
-      </div>
-    </td>
-  </ng-container>
+
+  </div>
+
+
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let element; columns: displayedColumns;"
@@ -51,5 +70,19 @@
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 </table>
-<mat-paginator [disabled]="columnsToDisplay.value.length > (displayedColumns.length - 2)" [pageSizeOptions]="[5, 10, 20]"
-  showFirstLastButtons></mat-paginator>
+<mat-paginator [disabled]="columnsToDisplay.value.length > (displayedColumns.length - 2)"
+  [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+<div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+  <div class="example-box" *ngFor="let timePeriod of displayedColumns" cdkDrag>
+    <div class="example-handle" cdkDragHandle>
+      <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+        <path
+          d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+        </path>
+        <path d="M0 0h24v24H0z" fill="none"></path>
+      </svg>
+    </div>
+    {{timePeriod}}
+  </div>
+</div>
