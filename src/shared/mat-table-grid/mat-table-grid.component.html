@@ -1,20 +1,31 @@
+<div>
+  <mat-form-field [floatLabel]="'always'">
+    <mat-label>Columns Hidden: {{columnsToDisplay.value.length}}</mat-label>
+    <mat-select [formControl]="columnsToDisplay" multiple>
+      <mat-option *ngFor="let column of displayedColumns" [value]="column">{{column | uppercase}}</mat-option>
+    </mat-select>
+    <mat-hint align="end">Hide /Un-hide column in table</mat-hint>
+  </mat-form-field>
+</div>
+<hr />
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
 
-  <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+  <ng-container matColumnDef="{{column}}"
+    *ngFor="let column of displayedColumns">
     <ng-container *ngIf="column === 'select'">
-      <th mat-header-cell *matHeaderCellDef>
+      <th [hidden]="isHidden(column)" mat-header-cell *matHeaderCellDef>
         <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
           [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
         </mat-checkbox>
       </th>
-      <td mat-cell *matCellDef="let row">
+      <td [hidden]="isHidden(column)" mat-cell *matCellDef="let row">
         <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
           [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
         </mat-checkbox>
       </td>
     </ng-container>
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
-    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+    <th mat-header-cell [hidden]="isHidden(column)" *matHeaderCellDef mat-sort-header><span class="marginleft10">{{column}}</span> </th>
+    <td mat-cell *matCellDef="let element" [hidden]=isHidden(column)> <span class="marginleft10">{{element[column]}}</span> </td>
   </ng-container>
   <ng-container matColumnDef="expandedDetail">
     <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
@@ -34,10 +45,11 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let element; columns: displayedColumns;" 
+  <tr mat-row *matRowDef="let element; columns: displayedColumns;"
     [class.example-expanded-row]="expandedElement === element"
     (click)="expandedElement = expandedElement === element ? null : element">
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 </table>
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+<mat-paginator [disabled]="columnsToDisplay.value.length > (displayedColumns.length - 2)" [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons></mat-paginator>

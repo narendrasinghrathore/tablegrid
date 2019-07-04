@@ -1,5 +1,11 @@
 table {
   width: 100%;
+  td,
+  th {
+    span.marginleft10 {
+      margin-left: 10px;
+    }
+  }
 }
 tr.example-detail-row {
   height: 0;

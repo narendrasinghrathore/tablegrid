@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatSort} from '@angular/material/sort';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-
+import { MatSort } from '@angular/material/sort';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormControl } from '@angular/forms';
 
 export interface PeriodicElement {
   name: string;
@@ -35,8 +35,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./mat-table-grid.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
@@ -48,15 +48,25 @@ export class MatTableGridComponent implements OnInit {
   selection = new SelectionModel<PeriodicElement>(true, []);
   expandedElement: PeriodicElement | null;
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  columnsToDisplay = new FormControl([]);
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+
   constructor() { }
 
   ngOnInit(): void {
     //
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.columnsToDisplay.valueChanges.subscribe(
+      data => {
+
+      }
+    )
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -71,6 +81,10 @@ export class MatTableGridComponent implements OnInit {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  isHidden(column: string) {
+    return this.columnsToDisplay.value.indexOf(column) !== -1;
   }
 
   /** The label for the checkbox on the passed row */
