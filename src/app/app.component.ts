@@ -8,10 +8,14 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class AppComponent {
   title = 'mat-table-grid';
-  constructor( matRegister: MatIconRegistry, sant: DomSanitizer){
-    matRegister.addSvgIcon(
-      'delete',
-      sant.bypassSecurityTrustResourceUrl('assets/icons/delete.svg')
-    )
+  icons = ['delete', 'eye', 'close'];
+  constructor(matRegister: MatIconRegistry, sant: DomSanitizer) {
+    this.icons.forEach(icon => {
+      matRegister.addSvgIcon(
+        icon,
+        sant.bypassSecurityTrustResourceUrl(`assets/icons/${icon}.svg`)
+      )
+    })
+
   }
 }

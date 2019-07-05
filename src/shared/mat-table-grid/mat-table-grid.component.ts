@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormControl } from '@angular/forms';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -44,17 +44,20 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class MatTableGridComponent implements OnInit {
 
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+  columnsForFilter: string[];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
   expandedElement: PeriodicElement | null;
 
-  columnsToDisplay = new FormControl([]);
+  columnsToDisplay = new FormControl([...this.displayedColumns]);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   previousIndex: number;
+  selectColumnToShow: string[];
+
 
 
   constructor() { }
@@ -64,11 +67,29 @@ export class MatTableGridComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
+    this.getFilterColumns();
+
+    this.selectColumnToShow = [...this.displayedColumns];
+
+    // hide or show columns in table
     this.columnsToDisplay.valueChanges.subscribe(
       data => {
-
+        this.displayedColumns = [...data];
+        this.getFilterColumns();
       }
-    )
+    );
+
+
+  }
+
+
+  filterTable(columnName, filterValue) {
+    console.log(filterValue.target.value, columnName);
+
+  }
+
+  getFilterColumns() {
+    this.columnsForFilter = this.displayedColumns.map(val => `${val}-filter`);
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -86,7 +107,7 @@ export class MatTableGridComponent implements OnInit {
   }
 
   isHidden(column: string) {
-    return this.columnsToDisplay.value.indexOf(column) !== -1;
+    return this.columnsToDisplay.value.indexOf(column) === -1;
   }
 
   /** The label for the checkbox on the passed row */
@@ -97,7 +118,7 @@ export class MatTableGridComponent implements OnInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
-  drag(event: CdkDragStart, index: number ) {
+  drag(event: CdkDragStart, index: number) {
     this.previousIndex = index;
   }
 
