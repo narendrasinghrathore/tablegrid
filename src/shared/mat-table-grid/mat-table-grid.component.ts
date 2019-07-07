@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormControl } from '@angular/forms';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, CdkDragStart } from '@angular/cdk/drag-drop';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -125,6 +125,7 @@ export class MatTableGridComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>, index) {
     moveItemInArray(this.displayedColumns, this.previousIndex, index);
+    moveItemInArray(this.columnsForFilter, this.previousIndex, index);
   }
 
 }

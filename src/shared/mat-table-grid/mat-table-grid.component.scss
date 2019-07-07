@@ -1,9 +1,12 @@
+@import '~@angular/material/theming';
+@include mat-core();
 .example-container {
   height: 400px;
   overflow: auto;
 }
 table {
   width: 100%;
+
   td,
   th {
     position: relative;
@@ -94,6 +97,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 .cdk-drag-preview {
+  color: white;
   background-color: #dedede;
   border: 2px dashed #555555;
   padding: 5px;
@@ -134,13 +138,27 @@ th:hover .example-handle {
   height: 24px;
 }
 
-.th-filter-cell {
-  border-radius: 3px;
-  border:1px solid;
-  padding: 0;
-  text-align: center;
-  mat-form-field {
-    width: 80%;
-    line-height: 15px;
+.tr-filter-cell,
+.mat-header-row {
+  background: initial;
+}
+
+.tr-filter-cell {
+  &:last-child {
+    border-left: 2px solid black;
+  }
+  .th-filter-cell {
+    border-radius: 3px 3px 0 0;
+    
+    padding: 0px;
+    text-align: center;
+    mat-form-field {
+      width: 80%;
+      line-height: 15px;
+      > .mat-form-field-underline {
+        bottom: 0.23em;
+        height: 5px !important;
+      }
+    }
   }
 }
