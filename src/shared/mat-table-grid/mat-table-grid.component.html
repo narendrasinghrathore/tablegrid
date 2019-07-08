@@ -18,7 +18,7 @@
 <hr />
 <!-- Table -->
 <div class="example-container mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"  multiTemplateDataRows
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 mat-table"  multiTemplateDataRows
     cdkDropListGroup>
 
     <!-- First Header Column For Filter -->
@@ -32,7 +32,8 @@
       </ng-template>
       <ng-template #elseblock>
         <th mat-header-cell *matHeaderCellDef class="th-filter-cell">
-          <mat-form-field class="example-form-field">
+          <mat-form-field class="mat-form-field-custom" appearance="outline" floatLabel="always">
+              <mat-label>{{column}}</mat-label>
             <input matInput type="text" #f (input)="filterTable(column, $event)">
             <button *ngIf="f.value !== ''" mat-button matSuffix mat-icon-button aria-label="Clear" (click)="f.value=''">
               <mat-icon svgIcon="close"></mat-icon>

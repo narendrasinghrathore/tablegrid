@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormControl } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray, CdkDragStart } from '@angular/cdk/drag-drop';
+import { ViewEncapsulation } from '@angular/core';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -40,6 +41,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class MatTableGridComponent implements OnInit {
 
@@ -123,7 +126,7 @@ export class MatTableGridComponent implements OnInit {
   }
 
 
-  drop(event: CdkDragDrop<string[]>, index) {
+  drop(event: CdkDragDrop<string[]>, index: number) {
     moveItemInArray(this.displayedColumns, this.previousIndex, index);
     moveItemInArray(this.columnsForFilter, this.previousIndex, index);
   }

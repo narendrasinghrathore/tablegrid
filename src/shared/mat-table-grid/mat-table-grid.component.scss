@@ -1,5 +1,3 @@
-@import '~@angular/material/theming';
-@include mat-core();
 .example-container {
   height: 400px;
   overflow: auto;
@@ -140,7 +138,7 @@ th:hover .example-handle {
 
 .tr-filter-cell,
 .mat-header-row {
-  background: initial;
+  background: #dedede;
 }
 
 .tr-filter-cell {
@@ -148,17 +146,25 @@ th:hover .example-handle {
     border-left: 2px solid black;
   }
   .th-filter-cell {
-    border-radius: 3px 3px 0 0;
-    
-    padding: 0px;
-    text-align: center;
-    mat-form-field {
-      width: 80%;
-      line-height: 15px;
-      > .mat-form-field-underline {
-        bottom: 0.23em;
-        height: 5px !important;
-      }
-    }
+    border-top: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    cursor: col-resize;
+    padding: 0 0 0 10px;
+    border-left: 1px solid #ffffff;
   }
+}
+
+:host ::ng-deep .mat-form-field-custom {
+  width: 80%;
+  > .mat-form-field-wrapper {
+    padding-bottom: 10px;
+  }
+}
+
+.mat-table mat-header-cell {
+  border-top: 1px solid;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  cursor: col-resize;
 }
