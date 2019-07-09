@@ -103,7 +103,7 @@ export class MatTableGridComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.setTableResize(this.matTableRef.nativeElement.clientWidth);
+    // this.setTableResize(this.matTableRef.nativeElement.clientWidth);
   }
 
   filterTable(columnName, filterValue) {

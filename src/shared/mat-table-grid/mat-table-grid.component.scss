@@ -149,9 +149,11 @@ th:hover .example-handle {
     border-top: 1px solid;
     border-right: 1px solid;
     border-bottom: 1px solid;
-    cursor: col-resize;
+    // cursor: col-resize;
     padding: 0 0 0 10px;
     border-left: 1px solid #ffffff;
+    // overflow: auto;
+    // resize: horizontal;
   }
 }
 
