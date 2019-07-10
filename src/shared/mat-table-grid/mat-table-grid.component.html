@@ -4,6 +4,9 @@
     <mat-toolbar-row>
       <span>Table: [ Columns Visible : {{columnsToDisplay.value.length}}]</span>
       <span class="example-spacer"></span>
+
+    </mat-toolbar-row>
+    <mat-toolbar-row>
       <mat-icon svgIcon="eye" class="mat-icon-custom"></mat-icon>
       <mat-form-field [floatLabel]="'always'">
         <mat-label></mat-label>
@@ -18,11 +21,12 @@
 <hr />
 <!-- Table -->
 <div class="example-container mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 mat-table"  multiTemplateDataRows
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 mat-table" multiTemplateDataRows
     cdkDropListGroup>
 
     <!-- First Header Column For Filter -->
-    <ng-container matColumnDef="{{column.name}}" *ngFor="let column of columnsForFilter; let i = index">
+    <ng-container matColumnDef="{{column.name}}"
+      *ngFor="let column of columnsForFilter; let i = index; last as isLast;">
       <ng-container *ngIf="column.name == 'select-filter' then selectblock; else elseblock">
       </ng-container>
       <ng-template #selectblock>
@@ -31,9 +35,13 @@
         </th>
       </ng-template>
       <ng-template #elseblock>
-        <th mat-header-cell *matHeaderCellDef class="th-filter-cell"  (mousedown)="onResizeColumn($event, i)">
+        <th mat-header-cell *matHeaderCellDef class="th-filter-cell">
+          <!-- (mousedown)="onResizeColumn($event, i)" -->
+          <span class="resizer" [style.display]="isLast ? 'none' : 'inline'">
+            <span class="right" (mousedown)="onResizeColumn($event, i, '')"></span>
+          </span>
           <mat-form-field class="mat-form-field-custom" appearance="outline" floatLabel="always">
-              <mat-label>{{column.name}}</mat-label>
+            <mat-label>{{column.name}}</mat-label>
             <input matInput type="text" #f (input)="filterTable(column.name, $event)">
             <button *ngIf="f.value !== ''" mat-button matSuffix mat-icon-button aria-label="Clear" (click)="f.value=''">
               <mat-icon svgIcon="close"></mat-icon>
@@ -72,6 +80,7 @@
       <ng-template #generalcolumns>
         <th mat-header-cell (cdkDragStarted)="drag($event, i)" cdkDropList cdkDropListOrientation="horizontal"
           (cdkDropListDropped)="drop($event,i)" cdkDrag *matHeaderCellDef mat-sort-header>
+
           <div class="example-handle" cdkDragHandle>
             <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
               <path

@@ -200,7 +200,8 @@ export class MatTableGridComponent implements OnInit, AfterViewInit {
 
   private checkResizing(event, index) {
     const cellData = this.getCellData(index);
-    if ((index === 0) || (Math.abs(event.pageX - cellData.right) < cellData.width / 2 && index !== this.columnsForFilter.length - 1)) {
+    if ((index === 0) ||
+      (Math.abs(event.pageX - cellData.right) < cellData.width / 2 && index !== this.columnsForFilter.length - 1)) {
       this.isResizingRight = true;
     } else {
       this.isResizingRight = false;

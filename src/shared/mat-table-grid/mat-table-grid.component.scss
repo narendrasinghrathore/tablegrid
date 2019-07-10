@@ -138,7 +138,7 @@ th:hover .example-handle {
 
 .tr-filter-cell,
 .mat-header-row {
-  background: #dedede;
+  background: #ffffff;
 }
 
 .tr-filter-cell {
@@ -146,14 +146,40 @@ th:hover .example-handle {
     border-left: 2px solid black;
   }
   .th-filter-cell {
-    border-top: 1px solid;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    // cursor: col-resize;
-    padding: 0 0 0 10px;
-    border-left: 1px solid #ffffff;
-    // overflow: auto;
-    // resize: horizontal;
+    box-sizing: border-box;
+    padding: 10px 0px 0 18px;
+    font-size: 1.1em;
+
+    .resizer {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+
+      box-sizing: border-box;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+
+      .right {
+        cursor: col-resize;
+        position: absolute;
+        height: 100%;
+        box-sizing: border-box;
+        border: 2px solid;
+        top: 0;
+        bottom: 0;
+        opacity: 0.4;
+      }
+      .right:hover {
+        opacity: 1;
+      }
+
+      .right {
+        right: 0;
+        border-color: #999999;
+      }
+    }
   }
 }
 

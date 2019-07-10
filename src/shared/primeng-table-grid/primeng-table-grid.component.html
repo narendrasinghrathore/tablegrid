@@ -1,0 +1,49 @@
+<p-table [columns]="cols" [value]="cars" dataKey="vin">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th style="width: 3em"></th>
+            <th *ngFor="let col of columns">
+                {{col}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr>
+            <td>
+                <a href="#" [pRowToggler]="rowData">
+                    <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                </a>
+            </td>
+            <td *ngFor="let col of columns">
+                {{rowData[col]}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+        <tr>
+            <td [attr.colspan]="columns.length + 1">
+                <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+                    <div class="ui-g-12 ui-md-3" style="text-align:center">
+                        <!-- <img [attr.alt]="rowData.brand" src="assets/showcase/images/demo/car/{{rowData.brand}}.png"> -->
+                    </div>
+                    <div class="ui-g-12 ui-md-9">
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <b>Position:</b> {{rowData.position}}
+                            </div>
+                            <div class="ui-g-12">
+                                <b>Name:</b> {{rowData.name}}
+                            </div>
+                            <div class="ui-g-12">
+                                <b>Weight:</b> {{rowData.weight}}
+                            </div>
+                            <div class="ui-g-12">
+                                <b>symbol:</b> {{rowData.symbol}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
