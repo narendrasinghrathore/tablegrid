@@ -36,9 +36,9 @@
       </ng-template>
       <ng-template #elseblock>
         <th mat-header-cell *matHeaderCellDef class="th-filter-cell">
-          <!-- (mousedown)="onResizeColumn($event, i)" -->
+          <!--  (mousedown)="onResizeColumn($event, i, '')"-->
           <span class="resizer" [style.display]="isLast ? 'none' : 'inline'">
-            <span class="right" (mousedown)="onResizeColumn($event, i, '')"></span>
+            <span class="right" ></span>
           </span>
           <mat-form-field class="mat-form-field-custom" appearance="outline" floatLabel="always">
             <mat-label>{{column.name}}</mat-label>
