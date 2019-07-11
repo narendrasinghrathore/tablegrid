@@ -1,7 +1,7 @@
-<p-table [columns]="cols" [value]="cars" dataKey="vin">
+<p-table [columns]="cols" [value]="cars" dataKey="vin" appTableColumnResizer>
     <ng-template pTemplate="header" let-columns>
         <tr>
-            <th style="width: 3em"></th>
+            <th style="width: 3em;"></th>
             <th *ngFor="let col of columns">
                 {{col}}
             </th>

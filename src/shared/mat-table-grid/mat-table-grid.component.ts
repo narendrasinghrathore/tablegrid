@@ -102,46 +102,14 @@ export class MatTableGridComponent implements OnInit, AfterViewInit {
       }
     );
 
-   
+
 
   }
 
-  boundColumnDraggerToTh() {
-    console.log(document.querySelectorAll('table th'));
-    Array.prototype.forEach.call(
-      document.querySelectorAll('table th'),
-      (th) => {
-        th.style.position = 'relative';
 
-        const grip: HTMLDivElement = document.createElement('div');
-        grip.innerHTML = '&nbsp;';
-        grip.style.top = '0px';
-        grip.style.right = '0px';
-        grip.style.bottom = '0px';
-        grip.style.width = '5px';
-        grip.style.position = 'absolute';
-        grip.style.cursor = 'col-resize';
-        grip.addEventListener('mousedown', (e) => {
-          this.thElm = th;
-          this.startOffset = th.offsetWidth - e.pageX;
-        });
-
-        th.appendChild(grip);
-      });
-
-    document.addEventListener('mousemove', (e) => {
-      if (this.thElm) {
-        this.thElm.style.width = this.startOffset + e.pageX + 'px';
-      }
-    });
-
-    document.addEventListener('mouseup', () => {
-      this.thElm = undefined;
-    });
-  }
 
   ngAfterViewInit() {
-    this.boundColumnDraggerToTh();
+    // this.boundColumnDraggerToTh();
     // this.setTableResize(this.matTableRef.nativeElement.clientWidth);
   }
 
@@ -203,104 +171,5 @@ export class MatTableGridComponent implements OnInit, AfterViewInit {
     return this.columnsForFilter.map(val => val.name);
   }
 
-  /**
-   * Resize columns
-   */
-
-  // setDisplayedColumns() {
-  //   this.columnsForFilter.forEach((column, index) => {
-  //     column.index = index;
-  //     this.displayedColumns[index] = column.name;
-  //   });
-  // }
-
-  // setTableResize(tableWidth: number) {
-  //   let totWidth = 0;
-  //   this.columnsForFilter.forEach((column) => {
-  //     totWidth += column.width;
-  //   });
-  //   const scale = (tableWidth - 5) / totWidth;
-  //   this.columnsForFilter.forEach((column) => {
-  //     column.width *= scale;
-  //     this.setColumnWidth(column);
-  //   });
-  // }
-
-
-  // onResizeColumn(event: any, index: number) {
-  //   this.checkResizing(event, index);
-  //   this.currentResizeIndex = index;
-  //   this.pressed = true;
-  //   this.startX = event.pageX;
-  //   this.startWidth = event.target.clientWidth;
-  //   event.preventDefault();
-  //   this.mouseMove(index);
-  // }
-
-  // private checkResizing(event, index) {
-  //   const cellData = this.getCellData(index);
-  //   console.log(event.pageX , cellData.right, cellData.width , index ,this.columnsForFilter.length);
-  //   if ((index === 0) ||
-  //     (Math.abs(event.pageX - cellData.right) < cellData.width / 2 && index !== this.columnsForFilter.length - 1)) {
-  //     this.isResizingRight = true;
-  //   } else {
-  //     this.isResizingRight = false;
-  //   }
-  //   console.log(this.isResizingRight);
-  // }
-
-  // private getCellData(index: number) {
-  //   const headerRow = this.matTableRef.nativeElement.children[0];
-  //   const cell = headerRow.children[0].children[index];
-  //   console.log(cell);
-  //   return cell.getBoundingClientRect();
-  // }
-
-  // mouseMove(index: number) {
-  //   this.resizableMousemove = this.renderer.listen('document', 'mousemove', (event) => {
-  //     if (this.pressed && event.buttons) {
-  //       const dx = (this.isResizingRight) ? (event.pageX - this.startX) : (-event.pageX + this.startX);
-  //       const width = this.startWidth + dx;
-  //       if (this.currentResizeIndex === index && width > 50) {
-  //         this.setColumnWidthChanges(index, width);
-  //       }
-  //     }
-  //   });
-  //   this.resizableMouseup = this.renderer.listen('document', 'mouseup', (event) => {
-  //     if (this.pressed) {
-  //       this.pressed = false;
-  //       this.currentResizeIndex = -1;
-  //       this.resizableMousemove();
-  //       this.resizableMouseup();
-  //     }
-  //   });
-  // }
-
-  // setColumnWidthChanges(index: number, width: number) {
-  //   const orgWidth = this.columnsForFilter[index].width;
-  //   const dx = width - orgWidth;
-  //   if (dx !== 0) {
-  //     const j = (this.isResizingRight) ? index + 1 : index - 1;
-  //     const newWidth = this.columnsForFilter[j].width - dx;
-  //     if (newWidth > 50) {
-  //       this.columnsForFilter[index].width = width;
-  //       this.setColumnWidth(this.columnsForFilter[index]);
-  //       this.columnsForFilter[j].width = newWidth;
-  //       this.setColumnWidth(this.columnsForFilter[j]);
-  //     }
-  //   }
-  // }
-
-  // setColumnWidth(column: any) {
-  //   const columnEls = Array.from(document.getElementsByClassName('mat-column-' + column.name));
-  //   columnEls.forEach((el: HTMLDivElement) => {
-  //     el.style.width = column.width + 'px';
-  //   });
-  // }
-
-  // @HostListener('window:resize', ['$event'])
-  // onResize(event) {
-  //   this.setTableResize(this.matTableRef.nativeElement.clientWidth);
-  // }
 
 }
