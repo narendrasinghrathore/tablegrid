@@ -4,10 +4,12 @@
 }
 table {
   width: 100%;
+  table-layout: fixed;
 
   td,
   th {
     position: relative;
+    text-overflow: ellipsis;
     span.marginleft10 {
       margin-left: 10px;
     }
@@ -148,7 +150,7 @@ th:hover .example-handle {
   .th-filter-cell {
     box-sizing: border-box;
     padding: 10px 0px 0 18px;
-    font-size: 1.1em;
+    // font-size: 1.1em;
 
     .resizer {
       width: 100%;
