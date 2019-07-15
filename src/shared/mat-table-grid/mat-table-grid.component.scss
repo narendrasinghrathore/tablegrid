@@ -1,18 +1,26 @@
+
 .example-container {
   height: 400px;
-  overflow: auto;
+  overflow-x: auto;
 }
 table {
   width: 100%;
   table-layout: fixed;
+ 
 
   td,
   th {
+    
+    border-collapse: collapse;
+    box-sizing: border-box;
     position: relative;
     text-overflow: ellipsis;
     span.marginleft10 {
       margin-left: 10px;
     }
+  }
+  td{
+    // border: 1px solid black;
   }
 }
 tr.example-detail-row {
@@ -141,6 +149,7 @@ th:hover .example-handle {
 .tr-filter-cell,
 .mat-header-row {
   background: #ffffff;
+  box-sizing: border-box;
 }
 
 .tr-filter-cell {
@@ -150,38 +159,6 @@ th:hover .example-handle {
   .th-filter-cell {
     box-sizing: border-box;
     padding: 10px 0px 0 18px;
-    // font-size: 1.1em;
-
-    .resizer {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-
-      box-sizing: border-box;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-
-      .right {
-        cursor: col-resize;
-        position: absolute;
-        height: 100%;
-        box-sizing: border-box;
-        border: 2px solid;
-        top: 0;
-        bottom: 0;
-        opacity: 0.4;
-      }
-      .right:hover {
-        opacity: 1;
-      }
-
-      .right {
-        right: 0;
-        border-color: #999999;
-      }
-    }
   }
 }
 
@@ -191,10 +168,3 @@ th:hover .example-handle {
     padding-bottom: 10px;
   }
 }
-
-// .mat-table mat-header-cell {
-//   border-top: 1px solid;
-//   border-right: 1px solid;
-//   border-bottom: 1px solid;
-//   cursor: col-resize;
-// }

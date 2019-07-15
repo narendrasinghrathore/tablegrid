@@ -7,6 +7,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { FormControl } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray, CdkDragStart } from '@angular/cdk/drag-drop';
 import { ViewEncapsulation } from '@angular/core';
+
 export interface PeriodicElement {
   name: string;
   position: number;
