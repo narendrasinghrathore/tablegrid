@@ -7,6 +7,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { FormControl } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray, CdkDragStart } from '@angular/cdk/drag-drop';
 import { ViewEncapsulation } from '@angular/core';
+import { TableColumnResizerDirective } from '../directives/table-column-resizer.directive';
 
 export interface PeriodicElement {
   name: string;
@@ -63,6 +64,8 @@ export class MatTableGridComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  @ViewChild(TableColumnResizerDirective, {static: true}) columnResize: TableColumnResizerDirective;
 
   previousIndex: number;
   selectColumnToShow: string[];
@@ -163,6 +166,9 @@ export class MatTableGridComponent implements OnInit, AfterViewInit {
   drop(event: CdkDragDrop<string[]>, index: number) {
     moveItemInArray(this.displayedColumns, this.previousIndex, index);
     moveItemInArray(this.columnsForFilter, this.previousIndex, index);
+    setTimeout(() => {
+      this.columnResize.applyResizer();
+    });
   }
 
   /**

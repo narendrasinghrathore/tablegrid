@@ -1,4 +1,7 @@
-import { Directive, ElementRef, AfterViewInit, Renderer2, NgZone } from '@angular/core';
+import {
+  Directive, ElementRef, AfterViewInit,
+  Renderer2, NgZone
+} from '@angular/core';
 
 @Directive({
   selector: '[appTableColumnResizer]'
@@ -65,16 +68,15 @@ export class TableColumnResizerDirective implements AfterViewInit {
       });
 
     this.zone.runOutsideAngular(() => {
-      const tb: HTMLTableElement = (this.el.nativeElement);
+      // const tb: HTMLTableElement = (this.el.nativeElement);
 
       document.addEventListener('mousemove', (e) => {
         if (this.selectedTHElement) {
-          const val = this.startOffset + e.pageX + 'px';
           // const val = this.startOffset + e.pageX + 'px';
-          this.changedWidth = (this.startWidth + (e.pageX - this.startX)) + 'px';
-          this.changedTableWidth = (this.tableWidth + (e.pageX - this.startX)) + 'px';
-          this.renderer.setStyle(this.selectedTHElement, 'width', this.changedWidth);
-          this.renderer.setStyle(this.el.nativeElement, 'width', this.changedTableWidth);
+          const changedWidth = (this.startWidth + (e.pageX - this.startX)) + 'px';
+          const changedTableWidth = (this.tableWidth + (e.pageX - this.startX)) + 'px';
+          this.renderer.setStyle(this.selectedTHElement, 'width', changedWidth);
+          this.renderer.setStyle(this.el.nativeElement, 'width', changedTableWidth);
         }
       });
     });
