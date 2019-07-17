@@ -14,8 +14,8 @@ export class AppComponent {
       matRegister.addSvgIcon(
         icon,
         sant.bypassSecurityTrustResourceUrl(`assets/icons/${icon}.svg`)
-      )
-    })
+      );
+    });
 
   }
 }

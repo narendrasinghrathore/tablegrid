@@ -35,7 +35,7 @@
         </th>
       </ng-template>
       <ng-template #elseblock>
-        <th mat-header-cell *matHeaderCellDef class="th-filter-cell">
+        <th mat-header-cell *matHeaderCellDef class="th-filter-cell" >
           <mat-form-field class="mat-form-field-custom" appearance="outline" floatLabel="always">
             <mat-label>{{column.name}}</mat-label>
             <input matInput type="text" #f (input)="filterTable(column.name, $event)">

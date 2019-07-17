@@ -7,7 +7,11 @@ export class TableColumnResizerDirective implements AfterViewInit {
 
   selectedTHElement: HTMLElement;
   startOffset: number;
-
+  startX: number;
+  startWidth: number;
+  changedWidth: string;
+  tableWidth: number;
+  changedTableWidth: string;
 
   constructor(private el: ElementRef, private renderer: Renderer2, private zone: NgZone) { }
 
@@ -18,29 +22,11 @@ export class TableColumnResizerDirective implements AfterViewInit {
 
   applyResizer() {
     const thArray = this.el.nativeElement.querySelectorAll('th');
-    console.log(thArray);
     Array.prototype.forEach.call(thArray,
       (th: HTMLElement) => {
         th.style.position = th.style.position ? th.style.position : 'relative';
         th.style.cssText = `
         background-clip: padding-box;`;
-        // const span: HTMLSpanElement = this.renderer.createElement('span');
-
-
-        /**
-         * Span element for holding col resizer helper div below
-         */
-        // span.style.cssText = `
-        // width: 100%;
-        // height: 100%;
-        // position: absolute;
-        // top: 0;
-        // left: 0;
-        // right: 0;
-        // bottom: 0;
-        // box-sizing: border-box;
-        // `;
-
         /**
          * Grip to hold th to drag horizontally
          */
@@ -59,13 +45,6 @@ export class TableColumnResizerDirective implements AfterViewInit {
         cursor:col-resize;
         border-right: 1px solid;
         `;
-        // `
-        // top: 0px;
-        // right: 0px;
-        // bottom: 0px;
-        // position: absolute;
-        // cursor: col-resize;
-        // background-color: #444444;opacity: 0.2;`;
         grip.addEventListener('onmouseover', (e) => {
           grip.style.opacity = '1.0';
 
@@ -77,15 +56,11 @@ export class TableColumnResizerDirective implements AfterViewInit {
 
         grip.addEventListener('mousedown', (e) => {
           this.selectedTHElement = th;
-          this.startOffset =  th.offsetLeft - e.pageX;
-          console.log(th.offsetWidth, e.pageX, this.startOffset)
+          this.startX = e.pageX;
+          this.startWidth = th.clientWidth;
+          this.startOffset = th.offsetLeft - e.pageX;
+          this.tableWidth = this.el.nativeElement.clientWidth;
         });
-
-        this.renderer.setStyle(th, 'width', '200px');
-
-
-        // this.renderer.appendChild(span, grip);
-        // this.renderer.insertBefore(th, span, th.firstChild);
         this.renderer.appendChild(th, grip);
       });
 
@@ -95,8 +70,11 @@ export class TableColumnResizerDirective implements AfterViewInit {
       document.addEventListener('mousemove', (e) => {
         if (this.selectedTHElement) {
           const val = this.startOffset + e.pageX + 'px';
-          // this.renderer.setStyle(this.selectedTHElement, 'left', e.pageX - this.startOffset + tb.scrollLeft + 'px');
-          this.renderer.setStyle(this.selectedTHElement, 'width', val);
+          // const val = this.startOffset + e.pageX + 'px';
+          this.changedWidth = (this.startWidth + (e.pageX - this.startX)) + 'px';
+          this.changedTableWidth = (this.tableWidth + (e.pageX - this.startX)) + 'px';
+          this.renderer.setStyle(this.selectedTHElement, 'width', this.changedWidth);
+          this.renderer.setStyle(this.el.nativeElement, 'width', this.changedTableWidth);
         }
       });
     });
@@ -104,7 +82,6 @@ export class TableColumnResizerDirective implements AfterViewInit {
 
     this.zone.runOutsideAngular(() => {
       document.addEventListener('mouseup', () => {
-
         this.selectedTHElement = undefined;
       });
     });
