@@ -30,13 +30,13 @@
             <ng-container *ngIf="column.name == 'select-filter' then selectblock; else elseblock">
             </ng-container>
             <ng-template #selectblock>
-              <th mat-header-cell *matHeaderCellDef>
+              <th mat-header-cell *matHeaderCellDef [style.width.px]="50">
                 #
-                <div class="grip" appResizable>&nbsp;</div>
+                <div class="grip" appResizable [column]="column">&nbsp;</div>
               </th>
             </ng-template>
             <ng-template #elseblock>
-              <th mat-header-cell *matHeaderCellDef class="th-filter-cell">
+              <th mat-header-cell *matHeaderCellDef class="th-filter-cell" [style.width.px]="column.width">
                 <mat-form-field class="mat-form-field-custom" appearance="outline" floatLabel="always">
                   <mat-label>{{column.name}}</mat-label>
                   <input matInput type="text" #f (input)="filterTable(column.name, $event)">
@@ -44,7 +44,7 @@
                     <mat-icon svgIcon="close"></mat-icon>
                   </button>
                 </mat-form-field>
-                <div class="grip" appResizable>&nbsp;</div>
+                <div class="grip" appResizable [column]="column">&nbsp;</div>
               </th>
             </ng-template>
       
