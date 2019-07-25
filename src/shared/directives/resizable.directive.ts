@@ -1,5 +1,7 @@
-import { Directive, ElementRef, Renderer2,
-  NgZone, AfterViewInit, HostListener } from '@angular/core';
+import {
+  Directive, ElementRef, Renderer2,
+  NgZone, AfterViewInit, HostListener, Input
+} from '@angular/core';
 
 @Directive({
   selector: '[appResizable]'
@@ -9,9 +11,10 @@ export class ResizableDirective implements AfterViewInit {
   tableElement: HTMLElement;
   startX: number;
   startingTHWidth: number;
-  changedTHWidth: string;
+  changedTHWidth: number;
   StartingTableWidth: number;
-  changedTableWidth: string;
+  changedTableWidth: number;
+  @Input() column: any;
 
   constructor(private el: ElementRef, private renderer: Renderer2, private zone: NgZone) { }
 
@@ -32,10 +35,11 @@ export class ResizableDirective implements AfterViewInit {
     this.zone.runOutsideAngular(() => {
       document.addEventListener('mousemove', (e) => {
         if (this.selectedTHElement) {
-          this.changedTHWidth = (this.startingTHWidth + (e.pageX - this.startX)) + 'px';
-          this.changedTableWidth = (this.StartingTableWidth + (e.pageX - this.startX)) + 'px';
-          this.renderer.setStyle(this.selectedTHElement, 'width', this.changedTHWidth);
-          this.renderer.setStyle(this.tableElement, 'width', this.changedTableWidth);
+          this.changedTHWidth = (this.startingTHWidth + (e.pageX - this.startX));
+          this.changedTableWidth = (this.StartingTableWidth + (e.pageX - this.startX));
+          this.renderer.setStyle(this.selectedTHElement, 'width', this.changedTHWidth + 'px');
+          this.renderer.setStyle(this.tableElement, 'width', this.changedTableWidth + 'px');
+          this.column.width = this.changedTHWidth;
         }
       });
     });

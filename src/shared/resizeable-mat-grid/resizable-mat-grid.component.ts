@@ -16,7 +16,6 @@ export interface PeriodicElement {
 }
 export interface IColumnResize {
   name: string;
-  width: any;
   [key: string]: any;
 }
 
@@ -53,7 +52,6 @@ export class ResizableMatGridComponent implements OnInit {
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
   expandedElement: PeriodicElement | null;
-
   columnsToDisplay = new FormControl([...this.displayedColumns]);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -110,15 +108,12 @@ export class ResizableMatGridComponent implements OnInit {
 
   filterTable(columnName, filterValue) {
     console.log(filterValue.target.value, columnName);
-
   }
 
   setFilterColumns() {
     this.columnsForFilter = this.displayedColumns.map(val => {
       return {
-        name: `${val}-filter`,
-        width: 300
-
+        name: `${val}-filter`
       };
     });
   }
@@ -158,7 +153,6 @@ export class ResizableMatGridComponent implements OnInit {
     moveItemInArray(this.displayedColumns, this.previousIndex, index);
     moveItemInArray(this.columnsForFilter, this.previousIndex, index);
   }
-
   /**
    * Return array for filter columns
    */
